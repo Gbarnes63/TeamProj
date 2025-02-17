@@ -68,3 +68,5 @@ client.write(database=database, record=point)
 
 
 print("Complete. Return to the InfluxDB UI.")
+
+"hello"
