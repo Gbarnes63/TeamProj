@@ -35,16 +35,34 @@ dummy_data['point 3'] = {
 print(dummy_data)
 
 
-for key in dummy_data:
-  print(key)
-  point = (
-    Point('Temp')
-    .tag("Sensor ID", dummy_data[key]['Sensor'])
-    .field('Temp',dummy_data[key]['Temp'])
+def parse_to_point(reading, reading_dict):
+    """
+    Parses sensor temperateure/humidity readings and writes them to InfluxDB.
 
+    Args:
+        reading (str): The key for the reading to be written to InfluxDB. String can only be 'Temp' or 'Humidity'
+        reading_dict (dict): A dictionary containing sensor data. Must be in the format below in dummy_data.
 
-  )
-  client.write(database=database,record = point)
+        dummy_data['point 3'] = {
+                                    "Sensor": "1",
+                                    "Unit": "C",
+                                    "Temp": 50,
+                                }
+
+    Returns:
+        Point: Returns record as point
+    """
+    for key in reading_dict:
+        print(key)
+        point = (
+            Point(reading)
+            .tag("Sensor ID", reading_dict[key]['Sensor'])
+            .field(reading, reading_dict[key][reading])
+        )
+        client.write(database=database, record=point)
+
+    return point
+
 
 
 
