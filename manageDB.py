@@ -59,12 +59,12 @@ def parse_to_point(reading, reading_dict):
             .tag("Sensor ID", reading_dict[key]['Sensor'])
             .field(reading, reading_dict[key][reading])
         )
-        client.write(database=database, record=point)
+        
 
     return point
 
-
-
+point = parse_to_point('Temp',dummy_data)
+client.write(database=database, record=point)
 
 
 print("Complete. Return to the InfluxDB UI.")
