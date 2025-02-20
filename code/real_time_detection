@@ -5,6 +5,7 @@ import time
 import pickle
 import face_recognition
 
+#loads haar cascades pre trained algo for face detection
 face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
 
 picam2 = Picamera2()
@@ -12,6 +13,7 @@ picam2.configure(picam2.create_preview_configuration(main={"size": (1280, 960)},
 picam2.start()
 time.sleep(2)
 
+#opens and reads the pickle file containing face encodings
 with open("encodings.pickle", "rb") as d:
     data = pickle.loads(d.read())
     known_face_encoding = data["encodings"]
@@ -61,6 +63,6 @@ while True:
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
 
-# Release the camera and close the window
+#cleanup
 picam2.close()
 cv2.destroyAllWindows()
