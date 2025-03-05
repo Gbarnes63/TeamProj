@@ -135,5 +135,5 @@ docker run -d \
 ## Conclusion
 
 You now have Docker installed and InfluxDB and Grafana Enterprise running in Docker containers, ready for monitoring and visualization tasks.
-```
+
 
