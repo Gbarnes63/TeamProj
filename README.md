@@ -1,7 +1,5 @@
 
-
-```markdown
-# InfluxDB and Grafana Enterprise Setup with Docker
+InfluxDB and Grafana Enterprise Setup with Docker
 
 This guide provides step-by-step instructions to install Docker and set up InfluxDB and Grafana Enterprise using Docker containers.
 
@@ -14,7 +12,7 @@ This guide provides step-by-step instructions to install Docker and set up Influ
 1. Update your package list:
    ```bash
    sudo apt update
-   ```
+ 
 
 2. Install dependencies:
    ```bash
