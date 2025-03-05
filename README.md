@@ -50,15 +50,6 @@ This guide provides step-by-step instructions to install Docker and set up Influ
    sudo systemctl enable docker
    ```
 
-### On macOS
-
-1. Download Docker Desktop for Mac from the [official Docker website](https://www.docker.com/products/docker-desktop).
-2. Install Docker Desktop by dragging the Docker icon to the Applications folder.
-3. Launch Docker Desktop from the Applications folder.
-4. Verify Docker installation:
-   ```bash
-   docker --version
-   ```
 
 ## Step 2: Pull the Docker Images
 
@@ -72,19 +63,10 @@ docker pull influxdb:latest
 docker pull grafana/grafana-enterprise:latest
 ```
 
----
-
-## Step 3: Create Docker Network
-
-Create a Docker network to allow communication between the InfluxDB and Grafana containers.
-
-```bash
-docker network create monitoring-network
-```
 
 ---
 
-## Step 4: Run the InfluxDB Container
+## Step 3: Run the InfluxDB Container
 
 Start the InfluxDB container and attach it to the created network.
 
@@ -106,7 +88,7 @@ docker run -d \
 
 ---
 
-## Step 5: Run the Grafana Enterprise Container
+## Step 4: Run the Grafana Enterprise Container
 
 Start the Grafana Enterprise container and connect it to the same network.
 
@@ -128,7 +110,7 @@ docker run -d \
 
 ---
 
-## Step 6: Configure Grafana to Connect to InfluxDB
+## Step 5: Configure Grafana to Connect to InfluxDB
 
 1. Open Grafana in your browser: `http://localhost:3000`.
 2. Log in with the default credentials:
@@ -143,7 +125,7 @@ docker run -d \
 
 ---
 
-## Step 7: Verify the Setup
+## Step 6: Verify the Setup
 
 - Access InfluxDB at `http://localhost:8086` to ensure it's running.
 - Access Grafana at `http://localhost:3000` and verify that the InfluxDB data source is working.
