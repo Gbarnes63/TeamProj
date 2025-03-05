@@ -1,4 +1,4 @@
-Here’s the updated GitHub Markdown (`.md`) file that includes steps for installing Docker, along with the setup for InfluxDB and Grafana Enterprise. You can copy this entire block and save it as `README.md`:
+
 
 ```markdown
 # InfluxDB and Grafana Enterprise Setup with Docker
@@ -61,18 +61,6 @@ This guide provides step-by-step instructions to install Docker and set up Influ
    ```bash
    docker --version
    ```
-
-### On Windows
-
-1. Download Docker Desktop for Windows from the [official Docker website](https://www.docker.com/products/docker-desktop).
-2. Run the installer and follow the on-screen instructions.
-3. Launch Docker Desktop from the Start menu.
-4. Verify Docker installation:
-   ```bash
-   docker --version
-   ```
-
----
 
 ## Step 2: Pull the Docker Images
 
@@ -164,23 +152,8 @@ docker run -d \
 
 ---
 
-
-
-Run the setup with:
-
-```bash
-docker-compose up -d
-```
-
----
-
 ## Conclusion
 
 You now have Docker installed and InfluxDB and Grafana Enterprise running in Docker containers, ready for monitoring and visualization tasks.
 ```
 
-### How to Use This Markdown File
-1. Copy the entire content above.
-2. Save it as `README.md` in your GitHub repository.
-3. Push the file to your repository.
-4. The Markdown will render automatically on GitHub, providing a clean and readable guide for users.
