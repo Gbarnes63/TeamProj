@@ -1,37 +1,37 @@
 import os, time
-from influxdb_client_3 import InfluxDBClient3, Point
-
-token = os.environ.get("INFLUXDB_TOKEN")
-token = "lN30ygiY4Q7XAXnUnDxhoVACxUyRuFfGCgAmYtM6PJe2bhI9I09eqKco1977dLqh-UhBKc8N0FaNhmmozs33xg=="
-org = "Uod"
-host = "https://us-east-1-1.aws.cloud2.influxdata.com"
-
-client = InfluxDBClient3(host=host, token=token, org=org)
 
 
-database="Temp"
+
+
+
+
+import influxdb_client, os, time
+from influxdb_client import InfluxDBClient, Point, WritePrecision
+from influxdb_client.client.write_api import SYNCHRONOUS
+
+token = 'T00lUif3KjaNgQOOVpOpIi8d2vIZupRNbDlPh-IlymKNbr9fQQ0hRw3bcDacACQxKlV1WaY2pVcOUg5KS4LMFA=='
+
+url = "http://localhost:8086"
+
+org = "teampi"
+
+
+
+
+
 
 
 
 dummy_data = {}
-dummy_data['point 1'] = {
-    "Sensor": "1",
-    "Unit": "C",
-    "Temp": 40,
-  }
 
-dummy_data['point 2'] = {
-    "Sensor": "1",
-    "Unit": "C",
-    "Temp": 41,
-  }
-
-
-dummy_data['point 3'] = {
+dummy_data['datapoint 4'] = {
     "Sensor": "1",
     "Unit": "C",
     "Temp": 50,
   }
+
+
+
 print(dummy_data)
 
 
@@ -60,13 +60,19 @@ def parse_to_point(reading, reading_dict):
             .field(reading, reading_dict[key][reading])
         )
         
-
+    print('Dictionary parsed to  point successfuly')
     return point
 
-point = parse_to_point('Temp',dummy_data)
-client.write(database=database, record=point)
+def write_to_db(reading,point,parsed_data):
+
+    point = parse_to_point(reading,parsed_data)
+    write_client = influxdb_client.InfluxDBClient(url=url, token=token, org=org)
+    
+    write_api = write_client.write_api(write_options=SYNCHRONOUS)
+    write_api.write(bucket='Temp/humidity', org="UoD", record=point)
 
 
-print("Complete. Return to the InfluxDB UI.")
+    print("Success")
 
-"hello"
+
+

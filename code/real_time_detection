@@ -1,0 +1,68 @@
+import cv2
+import numpy as np
+from picamera2 import Picamera2
+import time
+import pickle
+import face_recognition
+
+#loads haar cascades pre trained algo for face detection
+face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
+
+picam2 = Picamera2()
+picam2.configure(picam2.create_preview_configuration(main={"size": (1280, 960)}, lores={"size": (320, 240), "format": "RGB888"}))
+picam2.start()
+time.sleep(2)
+
+#opens and reads the pickle file containing face encodings
+with open("encodings.pickle", "rb") as d:
+    data = pickle.loads(d.read())
+    known_face_encoding = data["encodings"]
+    known_name = data["names"]
+    print(f"name = {known_name}")
+
+def detect_faces(frame):
+    display_frame = frame.copy()
+    frame_to_process = cv2.resize(display_frame, (320, 240)) #resize frame for higher fps
+
+    rgb_frame = cv2.cvtColor(frame_to_process, cv2.COLOR_BGR2RGB) #face recognition works of RGB not BGR
+
+    faces = face_cascade.detectMultiScale(frame_to_process, scaleFactor=1.07, minNeighbors=6, minSize=(30, 30), flags=cv2.CASCADE_SCALE_IMAGE) #return x, y coordinate of top-left corner of box, width and height of box in a tuple
+
+    face_encodings = face_recognition.face_encodings(rgb_frame)
+
+    for (x, y, w, h) in faces:
+
+        face_encoding = face_recognition.face_encodings(rgb_frame, [(y, x+w, y+h, x)])
+        if face_encoding:
+            face_encoding = face_encoding[0]
+
+            matches = face_recognition.compare_faces(known_face_encoding, face_encoding)
+            name = "Unknown"
+
+            if True in matches:
+                first_match_index = matches.index(True)
+                name = known_name[first_match_index]
+
+
+            cv2.rectangle(frame_to_process, (x, y), (x + w, y + h), (0, 0, 255), 2) #(x+y) = top-left coordinate, (x + w, y + h) = bottom-right coordinate, colour and thickness
+            cv2.putText(frame_to_process, name, (x, y - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (0, 255, 0), 2)
+
+    return frame_to_process
+
+while True:
+    frame = picam2.capture_array()
+    
+    #convert the frame to BGR to remove blue-ish filter
+    frame = cv2.cvtColor(frame, cv2.COLOR_RGB2BGR)
+    
+    frame = detect_faces(frame)
+
+    #display frame with bounding box
+    cv2.imshow('Face Detection', frame)
+
+    if cv2.waitKey(1) & 0xFF == ord('q'):
+        break
+
+#cleanup
+picam2.close()
+cv2.destroyAllWindows()
